@@ -21,7 +21,7 @@ public class Consumption {
 		return con;
 	}
 
-	public String insertConsumption(String Account_No, String C_Reading, String P_Reading, String Bill) {
+	public String insertConsumption(String Account_No, String Reading, String Date) {
 		String output = "";
 		try {
 			Connection con = connect();
@@ -29,21 +29,22 @@ public class Consumption {
 				return "Error while connecting to the database for inserting.";
 			}
 			// create a prepared statement
-			String query = " insert into consumption(`Consumption_ID`,`Account_No`,`C_Reading`,`P_Reading`,`Bill`)" + " values (?, ?, ?, ?, ?)";
+			String query = " insert into consumption(`Account_No`,`Reading`,`Date`)" + " values ( ?, ?, ?)";
 			PreparedStatement preparedStmt = con.prepareStatement(query);
 			// binding values
-			preparedStmt.setInt(1, 0);
-			preparedStmt.setString(2, Account_No);
-			preparedStmt.setString(3, C_Reading);
-			preparedStmt.setString(4, P_Reading);
-			preparedStmt.setString(5, Bill);
+//			preparedStmt.setInt(1, 0);
+			preparedStmt.setString(1, Account_No);
+			preparedStmt.setString(2, Reading);
+			preparedStmt.setString(3, Date);
+			
 
 			// execute the statement
 			preparedStmt.execute();
 			con.close();
 			output = "Inserted successfully";
 		} catch (Exception e) {
-			output = "Error while inserting the Consumption.";
+//			output = "Error while inserting the Consumption.";
+			output = e.getMessage();
 			System.err.println(e.getMessage());
 		}
 		return output;
@@ -57,7 +58,7 @@ public class Consumption {
 				return "Error while connecting to the database for reading.";
 			}
 			// Prepare the html table to be displayed
-			output = "<table border=\"1\"><tr><th>Consumption ID</th><th>Customer Name</th><th>C_Reading</th><th>P_Reading</th><th>Bill</th></tr>";
+			output = "<table border=\"1\"><tr><th>Consumption ID</th><th>Customer Account ID </th><th>Reading</th><th>Date</th></tr>";
 			String query = "select * from consumption";
 			Statement stmt = (Statement) con.createStatement();
 			ResultSet rs = ((java.sql.Statement) stmt).executeQuery(query);
@@ -65,15 +66,15 @@ public class Consumption {
 			while (rs.next()) {
 				String Consumption_ID = Integer.toString(rs.getInt("Consumption_ID"));
 				String Account_No = rs.getString("Account_No");
-				String C_Reading = rs.getString("C_Reading");
-				String P_Reading = rs.getString("P_Reading");
-				String Bill = rs.getString("Bill");
+				String Reading = rs.getString("Reading");
+				String Date = rs.getString("Date");
+				
 
 				output += "<tr><td>" + Consumption_ID + "</td>";
 				output += "<td>" + Account_No + "</td>";
-				output += "<td>" + C_Reading + "</td>";
-				output += "<td>" + P_Reading + "</td>";
-				output += "<td>" + Bill + "</td>";
+				output += "<td>" + Reading + "</td>";
+				output += "<td>" + Date + "</td>";
+				
 			}
 			con.close();
 
@@ -85,7 +86,7 @@ public class Consumption {
 		return output;
 	}
 
-	public String updateConsumption(String Consumption_ID, String Account_No, String C_Reading, String P_Reading, String Bill) {
+	public String updateConsumption(String Consumption_ID, String Account_No, String Reading, String Date) {
 		String output = "";
 
 		try {
@@ -96,16 +97,15 @@ public class Consumption {
 			}
 
 			// create a prepared statement
-			String query = "UPDATE consumption SET Account_No=?,C_Reading=?,P_Reading=?,Bill=? WHERE Consumption_ID=?";
+			String query = "UPDATE consumption SET Account_No=?,Reading=?,Date=? WHERE Consumption_ID=?";
 
 			PreparedStatement preparedStmt = con.prepareStatement(query);
 
 			// binding values
 			preparedStmt.setString(1, Account_No);
-			preparedStmt.setString(2, C_Reading);
-			preparedStmt.setString(3, P_Reading);
-			preparedStmt.setString(4, Bill);
-			preparedStmt.setInt(5, Integer.parseInt(Consumption_ID));
+			preparedStmt.setString(2, Reading);
+			preparedStmt.setString(3, Date);
+			preparedStmt.setInt(4, Integer.parseInt(Consumption_ID));
 
 			// execute the statement
 			preparedStmt.execute();
@@ -113,8 +113,7 @@ public class Consumption {
 
 			output = "Updated successfully";
 		} catch (Exception e) {
-			output = "Error while updating the Consumption.";
-			System.err.println(e.getMessage());
+			output = "Error while updating the Consumption." + e.getMessage();
 		}
 		return output;
 	}
