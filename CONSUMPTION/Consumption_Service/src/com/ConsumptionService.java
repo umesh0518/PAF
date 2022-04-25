@@ -26,10 +26,9 @@ public class ConsumptionService {
 	@Produces(MediaType.TEXT_PLAIN)
 	public String insertConsumption(
 			@FormParam("Account_No") String Account_No,
-			@FormParam("C_Reading") String C_Reading,
-			@FormParam("P_Reading") String P_Reading,
-			@FormParam("Bill") String Bill) {
-		String output = ConsumptionObj.insertConsumption(Account_No, C_Reading, P_Reading, Bill);
+			@FormParam("Reading") String Reading,
+			@FormParam("Date") String Date) {
+		String output = ConsumptionObj.insertConsumption(Account_No, Reading, Date);
 		return output;
 	}
 	
@@ -44,11 +43,10 @@ public class ConsumptionService {
 		
 		String Consumption_ID = ConsumptionObject.get("Consumption_ID").getAsString();
 		String Account_No = ConsumptionObject.get("Account_No").getAsString();
-		String C_Reading = ConsumptionObject.get("C_Reading").getAsString();
-		String P_Reading = ConsumptionObject.get("P_Reading").getAsString();
-		String Bill = ConsumptionObject.get("Bill").getAsString();
+		String Reading = ConsumptionObject.get("Reading").getAsString();
+		String Date = ConsumptionObject.get("Date").getAsString();
 		
-		String output = ConsumptionObj.updateConsumption(Consumption_ID, Account_No, C_Reading, P_Reading, Bill);
+		String output = ConsumptionObj.updateConsumption(Consumption_ID, Account_No, Reading, Date);
 		return output;
 	}
 	
