@@ -1,6 +1,3 @@
-/**
- * 
- */
 // =======================hiding the message div by default======================
 
 $(document).ready(function()
@@ -12,8 +9,6 @@ $(document).ready(function()
  	$("#alertError").hide();
  	
 });
-
-
 //========================== SAVE ========================
 
 $(document).on("click", "#btnSaveConsumption", function(event)
@@ -50,7 +45,6 @@ $(document).on("click", "#btnSaveConsumption", function(event)
  		}
  	});
 });
-
 
 function onCompletionSaveConsumption(response, status)
 {
@@ -111,6 +105,8 @@ $(document).on("click", ".btnUpdateConsumption", function(event)
 	
 		
 });
+
+
 
 
 
@@ -190,3 +186,4 @@ function consumptionFormValidation()
 
 		return true;
 }
+
