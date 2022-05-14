@@ -1,7 +1,17 @@
 /**
  * 
  */
+// =======================hiding the message div by default======================
 
+$(document).ready(function()
+{
+	if ($("#alertSuccess").text().trim() == "")
+ 	{
+ 		$("#alertSuccess").hide();
+ 	}
+ 	$("#alertError").hide();
+ 	
+});
 
 // ==============CLIENT- model validation ===================
 function consumptionFormValidation()
