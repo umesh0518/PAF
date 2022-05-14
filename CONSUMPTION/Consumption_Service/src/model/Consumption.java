@@ -41,10 +41,15 @@ public class Consumption {
 			// execute the statement
 			preparedStmt.execute();
 			con.close();
-			output = "Inserted successfully";
+
+			
+			// passing the response as json
+			String newAllConsumptionData = readConsumption();
+			 output = "{\"status\":\"success\", \"data\": \"" + newAllConsumptionData + "\"}"; 
+			
+			
 		} catch (Exception e) {
-//			output = "Error while inserting the Consumption.";
-			output = e.getMessage();
+			output =  "{\"status\":\"error\", \"data\":\"Error while inserting the data.\"}"; 
 			System.err.println(e.getMessage());
 		}
 		return output;
@@ -58,7 +63,23 @@ public class Consumption {
 				return "Error while connecting to the database for reading.";
 			}
 			// Prepare the html table to be displayed
-			output = "<table border=\"1\"><tr><th>Consumption ID</th><th>Customer Account ID </th><th>Reading</th><th>Date</th></tr>";
+		
+//			output =  "	            <table class='table table-striped'>"
+//					+ "                <thead>"
+//					+ "                  <tr>"
+//					+ "                    <th scope='col'>Account No</th>"
+//					+ "                    <th scope='col'>Reading</th>"
+//					+ "                    <th scope='col'>Date</th>"
+//					+ "                    <th scope='col'></th>"
+//					+ "                    <th scope='col'></th>"
+//					+ "                  </tr> "
+//					+ "                </thead>"
+//					+ "                <tbody>";
+//			
+			output =  "<table class='table table-striped'><thead><tr><th scope='col'>Account No</th><th scope='col'>Reading</th><th scope='col'>Date</th><th scope='col'></th><th scope='col'></th></tr></thead><tbody>";
+	
+	
+			
 			String query = "select * from consumption";
 			Statement stmt = (Statement) con.createStatement();
 			ResultSet rs = ((java.sql.Statement) stmt).executeQuery(query);
@@ -68,17 +89,19 @@ public class Consumption {
 				String Account_No = rs.getString("Account_No");
 				String Reading = rs.getString("Reading");
 				String Date = rs.getString("Date");
-				
 
-				output += "<tr><td>" + Consumption_ID + "</td>";
-				output += "<td>" + Account_No + "</td>";
-				output += "<td>" + Reading + "</td>";
-				output += "<td>" + Date + "</td>";
+				 output += "<tr><td>" + Account_No + "</td>";
+				 output += "<td>" + Reading + "</td>";
+				 output += "<td>" + Date + "</td>";
+				 output += "<td><button class='btn btn-warning btnUpdateConsumption' data-itemid ='" + Consumption_ID + "'" + ">Update</button></td>";
+				 output += "<td><button class='btn btn-danger btnRemoveConsumption'  data-itemid ='" + Consumption_ID + "'" + ">Delete</button></td></tr>";
 				
 			}
 			con.close();
-
-			output += "</table>";
+			//completing table.
+			output+= "</tbody></table>";
+					
+			
 		} catch (Exception e) {
 			output = "Error while reading the Consumption.";
 			System.err.println(e.getMessage());
@@ -111,9 +134,13 @@ public class Consumption {
 			preparedStmt.execute();
 			con.close();
 
-			output = "Updated successfully";
+			// passing the response as json
+			String newAllConsumptionData = readConsumption();
+			output = "{\"status\":\"success\", \"data\": \"" + newAllConsumptionData + "\"}"; 
+			
 		} catch (Exception e) {
-			output = "Error while updating the Consumption." + e.getMessage();
+			output =  "{\"status\":\"error\", \"data\":\"Error while updating the data.\"}"; 
+			System.err.println(e.getMessage());
 		}
 		return output;
 	}
@@ -141,9 +168,13 @@ public class Consumption {
 			preparedStmt.execute();
 			con.close();
 
-			output = "Deleted successfully";
+			//read the data now ..after deleting
+			// passing the response as json
+			String newAllConsumptionData = readConsumption();
+			output = "{\"status\":\"success\", \"data\": \"" + newAllConsumptionData + "\"}"; 
+		 	
 		} catch (Exception e) {
-			output = "Error while deleting the Consumption.";
+			output =  "{\"status\":\"error\", \"data\":\"Error while deleting the data.\"}"; 
 			System.err.println(e.getMessage());
 		}
 		return output;
